@@ -2,13 +2,34 @@
 
 Get started with Purple Clay in 5 minutes!
 
+## Prerequisites
+
+Before you begin, make sure you have Python 3.8+ installed:
+
+```bash
+python3 --version
+```
+
+If you get a "command not found" error, you need to install Python first. See our [Installation Guide](INSTALLATION.md) for detailed instructions.
+
 ## Installation
 
 ```bash
 git clone https://github.com/GitMonsters/purple-clay.git
 cd purple-clay
-pip install -e .
+
+# Optional: Verify your setup
+bash check_setup.sh
+
+# Install Purple Clay
+pip3 install -e .
 ```
+
+**Troubleshooting**: 
+- Use `python3` and `pip3` on macOS/Linux
+- Use `python` and `pip` on Windows
+- If pip is not found, try: `python3 -m pip install -e .`
+- See [INSTALLATION.md](INSTALLATION.md) for detailed help
 
 ## Your First Simulation
 

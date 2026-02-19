@@ -43,6 +43,16 @@ Purple Clay embodies the principle that **complex phenomena emerge from simple u
 
 ## Quick Start
 
+### Prerequisites
+
+Before installing Purple Clay, ensure you have:
+- **Python 3.8 or higher** installed
+- **pip** (Python package installer)
+
+**Don't have Python?** See our [detailed installation guide](INSTALLATION.md) for step-by-step instructions for your platform.
+
+**Quick check**: Run `python3 --version` to verify Python is installed. If not found, see [INSTALLATION.md](INSTALLATION.md).
+
 ### Installation
 
 ```bash
@@ -50,12 +60,19 @@ Purple Clay embodies the principle that **complex phenomena emerge from simple u
 git clone https://github.com/GitMonsters/purple-clay.git
 cd purple-clay
 
-# Install dependencies
-pip install -r requirements.txt
+# Verify prerequisites (optional but recommended)
+bash check_setup.sh
 
-# Optional: Install in development mode
-pip install -e .
+# Install Purple Clay and dependencies
+pip3 install -e .
+
+# Or just install dependencies
+pip3 install -r requirements.txt
 ```
+
+**Note**: Use `pip3` and `python3` on macOS/Linux. On Windows, use `pip` and `python`.
+
+**Troubleshooting**: If you get "command not found" errors, see [INSTALLATION.md](INSTALLATION.md) for help.
 
 ### Basic Usage
 
@@ -178,13 +195,40 @@ This framework aligns with xAI's mission to "understand the universe":
 
 ## Contributing
 
-We welcome contributions from researchers, physicists, computer scientists, and curious minds! Areas of interest:
+We welcome contributions from researchers, physicists, computer scientists, and curious minds! 
+
+**Before contributing**: Make sure you can run Purple Clay on your system. See [INSTALLATION.md](INSTALLATION.md) if you need help getting started.
+
+Areas of interest:
 
 - New emergent system models
 - Quantum algorithms and simulations
 - Visualization improvements
 - Performance optimizations
 - Scientific documentation
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+## Troubleshooting
+
+### Installation Issues
+
+**"python: command not found" or "pip: command not found"**
+- See our [detailed installation guide](INSTALLATION.md)
+- On macOS/Linux, try using `python3` and `pip3`
+- Run `bash check_setup.sh` to diagnose issues
+- On Windows, run `check_setup.bat`
+
+**"Permission denied" errors**
+- Use `pip3 install --user -e .` instead
+- Or use a virtual environment (recommended)
+
+**"ModuleNotFoundError" after installation**
+- Make sure you're in the purple-clay directory
+- Try reinstalling: `pip3 install -e .`
+- Check Python version: `python3 --version` (must be 3.8+)
+
+For more help, see [INSTALLATION.md](INSTALLATION.md) or open an issue on GitHub.
 
 ## Roadmap
 

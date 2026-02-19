@@ -40,22 +40,45 @@ Purple Clay is built on the principle that complex phenomena emerge from simple 
 
 ## Getting Started
 
+### Prerequisites
+
+Before contributing, ensure you have Python 3.8+ installed. If not, see [INSTALLATION.md](INSTALLATION.md).
+
+### Setup for Development
+
 1. Fork the repository
+
 2. Clone your fork:
    ```bash
    git clone https://github.com/YOUR_USERNAME/purple-clay.git
    cd purple-clay
    ```
 
-3. Install in development mode:
+3. Verify your setup (optional but recommended):
    ```bash
-   pip install -e ".[dev]"
+   # On macOS/Linux
+   bash check_setup.sh
+   
+   # On Windows
+   check_setup.bat
    ```
 
-4. Create a feature branch:
+4. Install in development mode:
+   ```bash
+   # Install with development dependencies
+   pip3 install -e ".[dev]"
+   
+   # Or if you don't have the dev extras configured yet
+   pip3 install -e .
+   pip3 install pytest pytest-cov black flake8
+   ```
+
+5. Create a feature branch:
    ```bash
    git checkout -b feature/your-feature-name
    ```
+
+**Troubleshooting**: If you encounter "command not found" errors, see [INSTALLATION.md](INSTALLATION.md).
 
 ## Development Guidelines
 
