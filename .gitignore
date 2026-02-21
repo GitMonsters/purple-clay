@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.tox/
+.venv/
+venv/
+env/
+ENV/
+.env
+
+# Distribution / packaging
+*.whl
+*.tar.gz
+MANIFEST
+
+# Unit test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# MyPy
+.mypy_cache/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/
+
+# Node (if used for contracts tooling)
+node_modules/
