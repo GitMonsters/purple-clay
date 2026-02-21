@@ -1,0 +1,126 @@
+(* ::Package:: *)
+
+(* =========================================================
+   Toroidal Geodesics — Validated Mathematica Notebook
+   Purple Clay / Unified Geometric Intelligence project
+   ========================================================= *)
+
+(* ---------------------------------------------------------
+   1. Torus parameters
+   --------------------------------------------------------- *)
+RT = 2;       (* major radius *)
+rT = 3/4;     (* minor radius *)
+
+(* ---------------------------------------------------------
+   2. Metric tensor in (u, v) coordinates
+      u = toroidal angle, v = poloidal angle
+      x = (RT + rT cos v) cos u
+      y = (RT + rT cos v) sin u
+      z = rT sin v
+   --------------------------------------------------------- *)
+g11[u_, v_] := (RT + rT Cos[v])^2;
+g12[u_, v_] := 0;
+g22[u_, v_] := rT^2;
+
+gMat[u_, v_] := {{g11[u, v], g12[u, v]}, {g12[u, v], g22[u, v]}};
+gInv[u_, v_] := Inverse[gMat[u, v]];
+
+(* ---------------------------------------------------------
+   3. Christoffel symbols  Gamma^k_{ij}
+      Gamma^k_{ij} = (1/2) g^{kl} (d_i g_{lj} + d_j g_{li} - d_l g_{ij})
+   --------------------------------------------------------- *)
+coords = {u, v};
+
+(* First kind: [ij, l] = (1/2)(d_i g_{jl} + d_j g_{il} - d_l g_{ij}) *)
+christoffelFirst[i_, j_, l_, u_, v_] :=
+  (1/2) (
+    D[gMat[u, v][[j, l]], coords[[i]]] +
+    D[gMat[u, v][[i, l]], coords[[j]]] -
+    D[gMat[u, v][[i, j]], coords[[l]]]
+  );
+
+(* Second kind: Gamma^k_{ij} = g^{kl} [ij, l] *)
+christoffelSecond[k_, i_, j_, u_, v_] :=
+  Sum[
+    gInv[u, v][[k, l]] * christoffelFirst[i, j, l, u, v],
+    {l, 1, 2}
+  ] // Simplify;
+
+(* Display non-zero Christoffel symbols *)
+Print["Non-zero Christoffel symbols:"];
+Do[
+  val = christoffelSecond[k, i, j, u, v];
+  If[val =!= 0,
+    Print["Gamma^", k, "_", i, j, " = ", val]
+  ],
+  {k, 1, 2}, {i, 1, 2}, {j, i, 2}
+]
+
+(* ---------------------------------------------------------
+   4. Geodesic ODEs
+      d^2 x^k/ds^2 + Gamma^k_{ij} (dx^i/ds)(dx^j/ds) = 0
+   --------------------------------------------------------- *)
+geodesicODE = {
+  u''[s] +
+    christoffelSecond[1, 1, 1, u[s], v[s]] * (u'[s])^2 +
+    2 christoffelSecond[1, 1, 2, u[s], v[s]] * u'[s] * v'[s] +
+    christoffelSecond[1, 2, 2, u[s], v[s]] * (v'[s])^2 == 0,
+  v''[s] +
+    christoffelSecond[2, 1, 1, u[s], v[s]] * (u'[s])^2 +
+    2 christoffelSecond[2, 1, 2, u[s], v[s]] * u'[s] * v'[s] +
+    christoffelSecond[2, 2, 2, u[s], v[s]] * (v'[s])^2 == 0
+};
+
+(* ---------------------------------------------------------
+   5. Initial conditions and numerical integration
+   --------------------------------------------------------- *)
+u0 = 0; v0 = Pi/4;       (* starting angles *)
+du0 = 1; dv0 = 1/2;      (* initial velocities *)
+sMax = 20;                (* arc-length parameter range *)
+
+sol = NDSolve[
+  Join[
+    geodesicODE,
+    {u[0] == u0, v[0] == v0, u'[0] == du0, v'[0] == dv0}
+  ],
+  {u, v},
+  {s, 0, sMax},
+  MaxSteps -> 10^5,
+  AccuracyGoal -> 10
+];
+
+(* ---------------------------------------------------------
+   6. Embed geodesic in 3-D and visualise
+   --------------------------------------------------------- *)
+uSol[s_] := u[s] /. sol[[1]];
+vSol[s_] := v[s] /. sol[[1]];
+
+torusPoint[u_, v_] := {
+  (RT + rT Cos[v]) Cos[u],
+  (RT + rT Cos[v]) Sin[u],
+  rT Sin[v]
+};
+
+(* Torus surface *)
+torusSurface = ParametricPlot3D[
+  torusPoint[u, v], {u, 0, 2 Pi}, {v, 0, 2 Pi},
+  PlotStyle -> Directive[Opacity[0.35], Purple],
+  Mesh -> None,
+  DisplayFunction -> Identity
+];
+
+(* Geodesic curve *)
+geodesicCurve = ParametricPlot3D[
+  torusPoint[uSol[s], vSol[s]], {s, 0, sMax},
+  PlotStyle -> Directive[Thick, Orange],
+  DisplayFunction -> Identity
+];
+
+(* Combined plot *)
+Show[
+  torusSurface, geodesicCurve,
+  ViewPoint -> {2.5, -2.5, 1.5},
+  Axes -> False,
+  Boxed -> False,
+  PlotLabel -> Style["Toroidal Geodesic", 14, Bold]
+]
